@@ -22,6 +22,7 @@
     "connect": "^3.3.4",
     "expres": "0.0.5",
     "express": "^4.13.4",
+    "lame": "^1.2.3",
     "nodemon": "^1.8.1",
     "opener": "^1.4.1",
     "serve-static": "^1.9.1",

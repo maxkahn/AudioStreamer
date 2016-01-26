@@ -75,24 +75,68 @@ server.on('connection', function(client) {
     //   }
     //   console.log("Connection Closed");
     // });
+      console.log(meta);
+      // stream.on('data', function(data) {
+      //push data to all connected clients
+      //todo fix delay
+      console.log('on data');
 
-    var encoder = new lame.Encoder({
-      // input 
-      channels: 2, // 2 channels (left and right) 
-      bitDepth: 32, // 16-bit samples 
-      float: true
-        // sampleRate: 44100, // 44,100 Hz sample rate 
+      //so in theory, instead of writing to a file, I could write to an output stream
+      var myStream = fs.createWriteStream('outputFromStream.mp3');
 
-      // // output 
-      // bitRate: 128,
-      // outSampleRate: 22050,
-      // mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO 
+      var encoder = new lame.Encoder({
+        channels: 2,
+        bitDepth: 32,
+        float: true,
+        sampleRate: 44100,
+
+        bitRate: 128,
+        outSampleRate: 22050,
+        mode: lame.MONO
+      });
+
+      stream.on('data', function(data) {
+        stream.pipe(encoder);
+        encoder.pipe(myStream);
+      })
+    //   stream.pipe(new lame.Encoder({
+    //   // input 
+    //   channels: 2, // 2 channels (left and right) 
+    //   bitDepth: 32, // 16-bit samples 
+    //   float: true,
+    //     sampleRate: 44100, // 44,100 Hz sample rate 
+
+    //   // // output 
+    //   bitRate: 128,
+    //   outSampleRate: 22050,
+    //   mode: lame.MONO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO 
+    // }));
+
+      stream.on('end', function() {
+        console.log('done');
+      });
+      stream.on('close', function() {
+        console.error('done!');
+      });
     });
 
-    encoder.on("data", function(data) {
-      console.log('encoder');
-      sendData(data);
-    });
+
+    // var encoder = new lame.Encoder({
+    //   // input 
+    //   channels: 2, // 2 channels (left and right) 
+    //   bitDepth: 32, // 16-bit samples 
+    //     sampleRate: 44100, // 44,100 Hz sample rate 
+
+    //   // // output 
+    //   bitRate: 128,
+    //   outSampleRate: 22050,
+    //   mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO 
+    // });
+
+    // encoder.on("data", function(data) {
+    //   console.log('encoder');
+    //   sendData(data);
+    // });
 
     // var decoder = new lame.Decoder();
 
@@ -103,20 +147,19 @@ server.on('connection', function(client) {
 
     // strea÷m.pipe(encoder);
 
-    stream.on('data', function(data) {
-      //push data to all connected clients
-      //todo fix delay
-      console.log('on data');
-      encoder.write(data);
-    });
+    // stream.on('data', function(data) {
+    //   //push data to all connected clients
+    //   //todo fix delay
+    //   console.log('on data');
+    //   encoder.write(data);
+    // });
 
-    var sendData = function(data) {
-      console.log('send data to client before');
-      clients.forEach(function(client) {
-        console.log('send data to client');
-        client.write(data);
-      });
-    }
+    // var sendData = function(data) {
+    //   console.log('send data to client before');
+    //   clients.forEach(function(client) {
+    //     console.log('send data to client');
+    //     client.write(data);
+    //   });
+    // }
+
   });
-
-});
