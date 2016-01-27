@@ -18,13 +18,16 @@
   },
   "homepage": "https://github.com/noamtcohen/AudioStreamer",
   "dependencies": {
+    "binary": "^0.3.0",
     "binaryjs": "^0.2.1",
     "connect": "^3.3.4",
     "expres": "0.0.5",
     "express": "^4.13.4",
+    "fluent-ffmpeg": "^2.0.1",
     "lame": "^1.2.3",
     "nodemon": "^1.8.1",
     "opener": "^1.4.1",
+    "rimraf": "^2.5.1",
     "serve-static": "^1.9.1",
     "wav": "^0.1.2"
   }
